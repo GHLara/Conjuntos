@@ -46,20 +46,24 @@
 # Observe que o professor irá testar seu programa com os arquivos de testes que você criar e com,
 # no mínimo um arquivo de testes criado pelo próprio professor.
 
-
 def trabalhar_conjuntos(arquivo):
-    contador = 0
     with open(arquivo) as teste:  # Apenas lendo o documento
         linhas = teste.readlines()
     conteudo = [x.rstrip('\n').replace(' ', '') for x in linhas]
+    for val in conteudo:
+        if val == '':
+            conteudo.remove(val)
+    
+    contador = 0
     novo = {}
-    for i in range(len(conteudo)):  # Criei um dicionário para armazenar os valores
+    for i in range(0, len(conteudo) -2, 3):  # Criei um dicionário para armazenar os valores
         if conteudo[i].isalpha():
-            novo[conteudo[i].rstrip(' ') + f'{contador}'] = [
-                [int(x) if x.isnumeric() else x.upper() for x in conteudo[i + 1].split(sep=',')],
-                [int(x) if x.isnumeric() else x.upper() for x in conteudo[i + 2].split(sep=',')]
-            ]
-            contador += 1
+            novo[conteudo[i].rstrip(' ').upper() + f'{contador}'] = [
+            [int(x) if x.isnumeric() else x for x in conteudo[i + 1].split(sep=',')],
+            [int(x) if x.isnumeric() else x for x in conteudo[i + 2].split(sep=',')]
+        ]
+        contador += 1
+
     diferentes = [] # Removi os valores que se repetem
     for item in novo:
         for x in range(2):
@@ -103,10 +107,10 @@ def verifica(operacao, conjunto1, conjunto2):
                 cartesiano.append((v1, v2))
         return f'Produto Cartesiano: conjunto 1 {conjunto1}, conjunto 2 {conjunto2}. Resultado: {cartesiano}'
     else:
-        return f'"{operacao}" Não é um tipo válido de operação com conjuntos'
+        return False
 
-
-dicionario = trabalhar_conjuntos('entrada2.txt')  # Digite Aqui o nome do arquivo que deseja ler
-# print(dicionario)  # voce pode printar o dicionário para ver como os dados estão dispostos
+dicionario = trabalhar_conjuntos('teste1.txt')  # Digite Aqui o nome do arquivo que deseja ler
 for key in dicionario:
-    print(verifica(key[0], dicionario[key][0], dicionario[key][1]))
+    if verifica(key[0], dicionario[key][0], dicionario[key][1]):
+        print(verifica(key[0], dicionario[key][0], dicionario[key][1]))
+        print()
